@@ -4,51 +4,79 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SisQo Dev</title>
-  <meta name="description" content="Building precise digital tools." />
+  <meta name="description" content="Developer. Builder. Permanently caffeinated." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #050508;
-      --surface: #0d0d14;
-      --border:  #1a1a2e;
-      --dim:     #3a3a5c;
-      --text:    #e2e2f0;
-      --muted:   #6b6b9a;
-      --violet:  #7c3aed;
-      --cyan:    #06b6d4;
-      --green:   #10b981;
-      --pink:    #ec4899;
+      --bg:      #03030a;
+      --surface: rgba(255,255,255,0.035);
+      --border:  rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.12);
+      --text:    #eeeeff;
+      --muted:   #5a5a8a;
+      --dim:     #2a2a4a;
+      --violet:  #8b5cf6;
+      --cyan:    #22d3ee;
+      --green:   #34d399;
+      --yellow:  #fbbf24;
+      --red:     #f87171;
     }
 
-    html, body {
-      height: 100%;
+    html { scroll-behavior: smooth; }
+
+    body {
       background: var(--bg);
       color: var(--text);
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* ── Canvas background ── */
-    #canvas {
+    /* ── Aurora canvas ── */
+    #aurora {
       position: fixed;
       inset: 0;
       z-index: 0;
-      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* ── Mouse glow ── */
+    #glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, rgba(34,211,238,0.04) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      transition: left 0.08s ease, top 0.08s ease;
+      mix-blend-mode: screen;
+    }
+
+    /* ── Grain overlay ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+      opacity: 0.028;
+      pointer-events: none;
+      z-index: 9999;
     }
 
     /* ── Layout ── */
     main {
       position: relative;
-      z-index: 1;
-      min-height: 100vh;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 1.5rem;
+      padding: 0 1.25rem 4rem;
     }
 
     /* ── Hero ── */
@@ -57,35 +85,34 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 8rem 0 5rem;
-      gap: 1.5rem;
+      padding: 7rem 0 4rem;
+      gap: 1.25rem;
     }
 
     .badge {
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--cyan);
-      border: 1px solid color-mix(in srgb, var(--cyan) 30%, transparent);
-      padding: 0.35em 0.9em;
+      border: 1px solid rgba(34,211,238,0.25);
+      padding: 0.3em 0.85em;
       border-radius: 999px;
+      background: rgba(34,211,238,0.04);
     }
 
     .title {
-      font-size: clamp(3rem, 10vw, 7rem);
+      font-size: clamp(2.8rem, 9vw, 6.5rem);
       font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      background: linear-gradient(135deg, #fff 30%, var(--violet) 70%, var(--cyan) 100%);
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      background: linear-gradient(130deg, #ffffff 20%, #c4b5fd 55%, #22d3ee 90%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       position: relative;
+      user-select: none;
     }
-
-    /* glitch layers */
-    .title::before,
-    .title::after {
+    .title::before, .title::after {
       content: attr(data-text);
       position: absolute;
       inset: 0;
@@ -95,347 +122,878 @@
       background-clip: text;
     }
     .title::before {
-      animation: glitch-1 4s infinite steps(1);
-      clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+      animation: glitch-a 5s infinite steps(1);
+      clip-path: polygon(0 18%, 100% 18%, 100% 38%, 0 38%);
     }
     .title::after {
-      animation: glitch-2 4s infinite steps(1);
-      clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+      animation: glitch-b 5s infinite steps(1);
+      clip-path: polygon(0 62%, 100% 62%, 100% 78%, 0 78%);
     }
-
-    @keyframes glitch-1 {
-      0%, 90%, 100% { transform: translate(0); opacity: 0; }
-      92% { transform: translate(-3px, 1px); opacity: 0.8; filter: hue-rotate(90deg); }
-      94% { transform: translate(3px, -1px); opacity: 0.8; }
-      96% { transform: translate(-2px, 0); opacity: 0.6; }
+    @keyframes glitch-a {
+      0%,88%,100%{transform:translate(0);opacity:0}
+      90%{transform:translate(-4px,1px);opacity:.85;filter:hue-rotate(80deg)}
+      92%{transform:translate(4px,-1px);opacity:.85}
+      94%{transform:translate(-2px,0);opacity:.5}
     }
-    @keyframes glitch-2 {
-      0%, 88%, 100% { transform: translate(0); opacity: 0; }
-      90% { transform: translate(3px, 2px); opacity: 0.7; filter: hue-rotate(-60deg); }
-      93% { transform: translate(-3px, 1px); opacity: 0.7; }
-      95% { transform: translate(1px, -2px); opacity: 0.5; }
+    @keyframes glitch-b {
+      0%,84%,100%{transform:translate(0);opacity:0}
+      86%{transform:translate(4px,2px);opacity:.75;filter:hue-rotate(-70deg)}
+      89%{transform:translate(-4px,1px);opacity:.75}
+      92%{transform:translate(2px,-1px);opacity:.4}
     }
 
     .tagline {
-      font-size: clamp(0.8rem, 2vw, 1rem);
+      height: 1.4em;
+      font-size: clamp(0.75rem, 2vw, 0.95rem);
       color: var(--muted);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       font-weight: 300;
-      max-width: 36ch;
-      line-height: 1.8;
+      font-style: italic;
     }
-
-    .tagline span {
-      color: var(--text);
-    }
-
-    .cursor {
+    .tagline-word { color: var(--text); font-style: normal; }
+    .tagline-cursor {
       display: inline-block;
-      width: 0.55em;
-      height: 1.1em;
+      width: 0.5em;
+      height: 0.85em;
       background: var(--cyan);
-      vertical-align: text-bottom;
+      vertical-align: middle;
+      margin-left: 1px;
       animation: blink 1s steps(1) infinite;
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-    /* ── Divider ── */
-    .divider {
+    /* ── Terminal ── */
+    .terminal-wrap {
       width: 100%;
-      max-width: 780px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), var(--dim), var(--border), transparent);
-      margin: 1rem 0 3rem;
+      max-width: 760px;
+      margin-bottom: 1.5rem;
     }
 
-    /* ── Projects ── */
-    .section-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--muted);
-      align-self: flex-start;
-      max-width: 780px;
-      width: 100%;
-      margin-bottom: 1.25rem;
-    }
-    .section-label::before { content: '// '; color: var(--dim); }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1px;
-      width: 100%;
-      max-width: 780px;
-      border: 1px solid var(--border);
+    .terminal {
+      background: rgba(8,8,18,0.85);
+      border: 1px solid var(--border2);
       border-radius: 12px;
       overflow: hidden;
-      background: var(--border);
+      box-shadow:
+        0 0 0 1px rgba(139,92,246,0.08),
+        0 32px 64px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
     }
 
-    .card {
-      background: var(--surface);
-      padding: 1.75rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: inherit;
-      transition: background 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--accent, var(--violet));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-    .card:hover::before { transform: scaleX(1); }
-    .card:hover { background: color-mix(in srgb, var(--surface) 70%, var(--accent, var(--violet)) 5%); }
-
-    .card-top {
+    .term-bar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--border);
+      user-select: none;
     }
 
-    .card-dot {
-      width: 8px; height: 8px;
+    .tdots { display: flex; gap: 6px; }
+    .tdot {
+      width: 12px; height: 12px;
       border-radius: 50%;
-      background: var(--accent, var(--violet));
-      box-shadow: 0 0 8px var(--accent, var(--violet));
     }
+    .tdot-r { background: #ff5f57; }
+    .tdot-y { background: #ffbd2e; }
+    .tdot-g { background: #28ca42; }
 
-    .card-arrow {
-      color: var(--dim);
-      font-size: 1.1rem;
-      transition: color 0.2s, transform 0.2s;
-    }
-    .card:hover .card-arrow { color: var(--accent, var(--violet)); transform: translate(2px, -2px); }
-
-    .card-name {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .card-desc {
-      font-size: 0.78rem;
+    .term-title {
+      flex: 1;
+      text-align: center;
+      font-size: 0.65rem;
       color: var(--muted);
-      line-height: 1.65;
+      letter-spacing: 0.05em;
+    }
+
+    .term-body {
+      padding: 1.25rem 1.25rem 0;
+      min-height: 240px;
+      max-height: 380px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--dim) transparent;
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+    .term-body::-webkit-scrollbar { width: 4px; }
+    .term-body::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 2px; }
+
+    .tline { display: flex; gap: 0.5em; white-space: pre-wrap; word-break: break-all; }
+    .tline.comment { color: var(--muted); font-style: italic; }
+    .tline.ok::before { content: '[  OK  ] '; color: var(--green); }
+    .tline.warn::before { content: '[ WARN ] '; color: var(--yellow); }
+    .tline.err::before { content: '[  !!  ] '; color: var(--red); }
+    .tline.out { color: rgba(238,238,255,0.75); padding-left: 1.2em; }
+    .tline.gap { height: 0.5em; }
+
+    .t-prompt { color: var(--violet); white-space: nowrap; }
+    .t-cmd     { color: var(--cyan); }
+    .t-arg     { color: var(--text); }
+    .t-kw      { color: var(--yellow); }
+
+    .term-input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      padding: 0 1.25rem 1.25rem;
+      padding-top: 0.4rem;
+    }
+
+    .term-prompt-label {
+      color: var(--violet);
+      font-size: 0.8rem;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    #termInput {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--cyan);
+      font-family: inherit;
+      font-size: 0.8rem;
+      caret-color: var(--cyan);
+    }
+
+    /* ── Bento ── */
+    .bento {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      width: 100%;
+      max-width: 760px;
+      background: var(--border);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .bcard {
+      background: rgba(8,8,18,0.7);
+      backdrop-filter: blur(16px);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .bcard-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .bcard-label::before { content: '// '; color: var(--dim); }
+
+    /* Clock card */
+    .clock-val {
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .clock-date {
+      font-size: 0.65rem;
+      color: var(--muted);
       font-weight: 300;
     }
-
-    .card-tag {
-      margin-top: auto;
-      align-self: flex-start;
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
+    .clock-tz {
+      font-size: 0.6rem;
+      color: var(--dim);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--accent, var(--violet));
-      border: 1px solid color-mix(in srgb, var(--accent, var(--violet)) 35%, transparent);
-      padding: 0.25em 0.6em;
-      border-radius: 4px;
+    }
+
+    /* Status card */
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      flex-shrink: 0;
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100%{opacity:1;transform:scale(1)}
+      50%{opacity:.6;transform:scale(0.85)}
+    }
+    .status-text {
+      font-size: 0.75rem;
+      color: var(--green);
+    }
+    .status-focus {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 300;
+      min-height: 1.2em;
+      transition: opacity 0.4s;
+    }
+    .status-focus.fade { opacity: 0; }
+
+    /* Sparkline card */
+    #sparkCanvas {
+      width: 100%;
+      height: 60px;
+      margin-top: 0.25rem;
     }
 
     /* ── Footer ── */
     footer {
-      margin-top: auto;
-      padding: 3rem 0 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
+      padding-top: 1rem;
     }
-
-    .footer-line {
-      font-size: 0.65rem;
+    .foot-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .foot-links a {
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .foot-links a:hover { color: var(--cyan); }
+    .foot-copy {
+      font-size: 0.6rem;
       letter-spacing: 0.15em;
       color: var(--dim);
       text-transform: uppercase;
     }
 
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .footer-links a {
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--cyan); }
-
-    /* ── Scroll-in animation ── */
+    /* ── Reveal ── */
     .reveal {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(16px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
-    }
+    .reveal.visible { opacity: 1; transform: none; }
 
-    @media (max-width: 480px) {
-      .hero { padding: 5rem 0 3rem; }
-      .grid { grid-template-columns: 1fr; }
+    @media (max-width: 540px) {
+      .bento { grid-template-columns: 1fr 1fr; }
+      .bcard:last-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 380px) {
+      .bento { grid-template-columns: 1fr; }
+      .bcard:last-child { grid-column: auto; }
     }
   </style>
 </head>
 <body>
 
-<canvas id="canvas"></canvas>
+<canvas id="aurora"></canvas>
+<div id="glow"></div>
 
 <main>
   <section class="hero">
     <div class="badge">sisqo.dev</div>
     <h1 class="title" data-text="SisQo Dev">SisQo Dev</h1>
-    <p class="tagline">
-      <span>Building</span> precise digital tools —<br/>
-      web apps, utilities, experiments.<span class="cursor"></span>
-    </p>
+    <p class="tagline" id="tagline"><span class="tagline-cursor"></span></p>
   </section>
 
-  <div class="divider reveal"></div>
-
-  <p class="section-label reveal">projects</p>
-
-  <div class="grid reveal">
-
-    <a class="card" href="https://easy-guitar-tuner.sisqo.dev" style="--accent: #2aab9e">
-      <div class="card-top">
-        <div class="card-dot"></div>
-        <span class="card-arrow">↗</span>
+  <div class="terminal-wrap reveal">
+    <div class="terminal">
+      <div class="term-bar">
+        <div class="tdots">
+          <span class="tdot tdot-r"></span>
+          <span class="tdot tdot-y"></span>
+          <span class="tdot tdot-g"></span>
+        </div>
+        <span class="term-title">zsh — sisqo@dev — 80×24</span>
+        <div style="width:48px"></div>
       </div>
-      <div class="card-name">Easy Guitar Tuner</div>
-      <div class="card-desc">Chromatic tuner for guitar and ukulele — precise, fast, distraction-free.</div>
-      <span class="card-tag">web app</span>
-    </a>
-
-    <a class="card" href="https://pg-energy.sisqo.dev" style="--accent: #3DDB8F">
-      <div class="card-top">
-        <div class="card-dot"></div>
-        <span class="card-arrow">↗</span>
+      <div class="term-body" id="termBody"></div>
+      <div class="term-input-row">
+        <span class="term-prompt-label">sisqo@dev:~$&nbsp;</span>
+        <input id="termInput" type="text" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="type a command..." />
       </div>
-      <div class="card-name">PG Energy</div>
-      <div class="card-desc">Vetrina istituzionale per ingegneria impiantistica ed energetica.</div>
-      <span class="card-tag">website</span>
-    </a>
+    </div>
+  </div>
 
-    <a class="card" href="https://bitcoin-cracker.sisqo.dev" style="--accent: #f59e0b">
-      <div class="card-top">
-        <div class="card-dot"></div>
-        <span class="card-arrow">↗</span>
+  <div class="bento reveal">
+    <div class="bcard">
+      <div class="bcard-label">local time</div>
+      <div class="clock-val" id="clockVal">00:00:00</div>
+      <div class="clock-date" id="clockDate">—</div>
+      <div class="clock-tz" id="clockTz">—</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-label">status</div>
+      <div class="status-row">
+        <div class="status-dot"></div>
+        <span class="status-text">online</span>
       </div>
-      <div class="card-name">Bitcoin Cracker</div>
-      <div class="card-desc">High-throughput Bitcoin wallet key-space exploration tool.</div>
-      <span class="card-tag">java / tool</span>
-    </a>
-
-    <a class="card" href="https://witch-cracker.sisqo.dev" style="--accent: #a855f7">
-      <div class="card-top">
-        <div class="card-dot"></div>
-        <span class="card-arrow">↗</span>
-      </div>
-      <div class="card-name">Witch Cracker</div>
-      <div class="card-desc">Brute-force hash cracking with dictionary and rule-based attacks.</div>
-      <span class="card-tag">java / tool</span>
-    </a>
-
+      <div class="status-focus" id="statusFocus">—</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-label">activity</div>
+      <canvas id="sparkCanvas"></canvas>
+    </div>
   </div>
 
   <footer class="reveal">
-    <div class="footer-links">
+    <div class="foot-links">
       <a href="https://github.com/sisqo">github</a>
       <a href="mailto:f.limberti@3nd.it">contact</a>
     </div>
-    <p class="footer-line">© 2026 SisQo Dev</p>
+    <p class="foot-copy">© 2026 SisQo Dev</p>
   </footer>
 </main>
 
 <script>
-  // ── Canvas: drifting particles ──
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles;
+/* ─────────────────────────────────────────
+   AURORA BACKGROUND
+───────────────────────────────────────── */
+(function() {
+  const c = document.getElementById('aurora');
+  const cx = c.getContext('2d');
+  let W, H;
 
-  const CHARS = '01アイウエオ{}[]<>/\\|=+-*&^%$#@!?;:.,'.split('');
-  const COLORS = ['#7c3aed','#06b6d4','#10b981','#a855f7','#ec4899'];
+  const BLOBS = [
+    { x:0.25, y:0.35, r:0.55, color:'#7c3aed', sp:0.22, ph:0.0 },
+    { x:0.72, y:0.28, r:0.45, color:'#06b6d4', sp:0.18, ph:1.1 },
+    { x:0.55, y:0.72, r:0.50, color:'#a855f7', sp:0.26, ph:2.2 },
+    { x:0.15, y:0.65, r:0.38, color:'#0ea5e9', sp:0.20, ph:3.4 },
+    { x:0.82, y:0.60, r:0.42, color:'#6366f1', sp:0.16, ph:4.6 },
+  ];
 
   function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    W = c.width  = window.innerWidth;
+    H = c.height = window.innerHeight;
   }
 
-  function makeParticle() {
-    return {
-      x:     Math.random() * W,
-      y:     Math.random() * H,
-      vy:    0.15 + Math.random() * 0.35,
-      vx:    (Math.random() - 0.5) * 0.1,
-      char:  CHARS[Math.floor(Math.random() * CHARS.length)],
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      size:  10 + Math.random() * 6,
-      life:  Math.random(),
-      maxLife: 0.4 + Math.random() * 0.6,
-      tick:  0,
-      changeEvery: 20 + Math.floor(Math.random() * 40),
-    };
+  function hex2rgb(h) {
+    const v = parseInt(h.slice(1), 16);
+    return [(v>>16)&255,(v>>8)&255,v&255];
   }
 
-  function init() {
-    resize();
-    particles = Array.from({ length: 80 }, makeParticle);
-  }
+  function draw(t) {
+    cx.clearRect(0, 0, W, H);
+    cx.globalCompositeOperation = 'screen';
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.font = `${14}px 'JetBrains Mono', monospace`;
-
-    for (const p of particles) {
-      p.x  += p.vx;
-      p.y  += p.vy;
-      p.life -= 0.001;
-      p.tick++;
-
-      if (p.tick % p.changeEvery === 0)
-        p.char = CHARS[Math.floor(Math.random() * CHARS.length)];
-
-      const alpha = Math.max(0, Math.min(p.life / p.maxLife, 1)) * 0.6;
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle   = p.color;
-      ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
-      ctx.fillText(p.char, p.x, p.y);
-
-      if (p.life <= 0 || p.y > H + 20 || p.x < -20 || p.x > W + 20) {
-        Object.assign(p, makeParticle());
-        p.y = -10;
-      }
+    for (const b of BLOBS) {
+      const bx = (b.x + Math.sin(t * b.sp * 0.001 + b.ph) * 0.18) * W;
+      const by = (b.y + Math.cos(t * b.sp * 0.0008 + b.ph) * 0.12) * H;
+      const br = b.r * Math.max(W, H) * 0.65;
+      const [r,g,bl] = hex2rgb(b.color);
+      const g2 = cx.createRadialGradient(bx, by, 0, bx, by, br);
+      g2.addColorStop(0, `rgba(${r},${g},${bl},0.22)`);
+      g2.addColorStop(0.4, `rgba(${r},${g},${bl},0.08)`);
+      g2.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+      cx.fillStyle = g2;
+      cx.fillRect(0, 0, W, H);
     }
-    ctx.globalAlpha = 1;
+
+    cx.globalCompositeOperation = 'source-over';
     requestAnimationFrame(draw);
   }
 
   window.addEventListener('resize', resize);
-  init();
-  draw();
+  resize();
+  requestAnimationFrame(draw);
+})();
 
-  // ── Scroll reveal ──
-  const observer = new IntersectionObserver(
-    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-    { threshold: 0.1 }
+/* ─────────────────────────────────────────
+   MOUSE GLOW
+───────────────────────────────────────── */
+(function() {
+  const g = document.getElementById('glow');
+  let tx = window.innerWidth/2, ty = window.innerHeight/2;
+  let cx = tx, cy = ty;
+  document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+  function step() {
+    cx += (tx-cx)*0.08; cy += (ty-cy)*0.08;
+    g.style.left = cx+'px'; g.style.top = cy+'px';
+    requestAnimationFrame(step);
+  }
+  step();
+})();
+
+/* ─────────────────────────────────────────
+   TAGLINE ROTATOR
+───────────────────────────────────────── */
+(function() {
+  const el = document.getElementById('tagline');
+  const lines = [
+    'developer<span class="tagline-word">.</span>',
+    'builder<span class="tagline-word">.</span>',
+    'permanently <span class="tagline-word">caffeinated</span>.',
+    'shipping bits since <span class="tagline-word">2016</span>.',
+    'git push && pray<span class="tagline-word">.</span>',
+    'it works on my <span class="tagline-word">machine</span>.',
+    'tabs > spaces<span class="tagline-word">.</span>',
+    'undefined is <span class="tagline-word">not a function</span>.',
+  ];
+  let idx = 0;
+  const CURSOR = '<span class="tagline-cursor"></span>';
+
+  function show(text) {
+    el.innerHTML = text + CURSOR;
+  }
+
+  show(lines[0]);
+
+  setInterval(() => {
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.3s';
+    setTimeout(() => {
+      idx = (idx + 1) % lines.length;
+      show(lines[idx]);
+      el.style.opacity = '1';
+    }, 320);
+  }, 3200);
+})();
+
+/* ─────────────────────────────────────────
+   TERMINAL
+───────────────────────────────────────── */
+(function() {
+  const body  = document.getElementById('termBody');
+  const input = document.getElementById('termInput');
+  let history = [], hIdx = -1, booted = false;
+
+  function scrollBottom() {
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function line(cls, html) {
+    const d = document.createElement('div');
+    d.className = 'tline ' + cls;
+    d.innerHTML = html;
+    body.appendChild(d);
+    scrollBottom();
+    return d;
+  }
+
+  function gap() { line('gap', ''); }
+
+  function prompt(cmd) {
+    const d = document.createElement('div');
+    d.className = 'tline';
+    d.innerHTML = `<span class="t-prompt">sisqo@dev:~$</span> <span class="t-cmd">${cmd.split(' ')[0]}</span> <span class="t-arg">${cmd.split(' ').slice(1).join(' ')}</span>`;
+    body.appendChild(d);
+    scrollBottom();
+  }
+
+  const BOOT = [
+    { cls:'ok',   text:'Initializing kernel modules...',  ms:0   },
+    { cls:'ok',   text:'Loading filesystems...',           ms:90  },
+    { cls:'ok',   text:'Mounting /home/sisqo...',          ms:170 },
+    { cls:'ok',   text:'Starting network stack...',        ms:280 },
+    { cls:'ok',   text:'Applying patches...',              ms:390 },
+    { cls:'ok',   text:'Starting dev environment...',      ms:510 },
+    { cls:'warn', text:'Coffee level: critical.',          ms:630 },
+    { cls:'gap',  text:'',                                 ms:760 },
+    { cls:'comment', text:'SisQo Dev OS v2.0.26 LTS — Last login: Mon Jun 30 2026', ms:820 },
+    { cls:'comment', text:"Type 'help' for available commands.", ms:880 },
+    { cls:'gap',  text:'',                                 ms:930 },
+  ];
+
+  function boot() {
+    BOOT.forEach(({ cls, text, ms }) => {
+      setTimeout(() => {
+        line(cls, text);
+        if (ms >= 930) {
+          booted = true;
+          input.focus();
+        }
+      }, ms);
+    });
+  }
+
+  const FORTUNE = [
+    '"Any fool can write code that a computer can understand. Good programmers write code that humans can understand." — Fowler',
+    '"First, solve the problem. Then, write the code." — Johnson',
+    '"Debugging is twice as hard as writing the code in the first place." — Kernighan',
+    '"Programs must be written for people to read." — Abelson',
+    '"The best error message is the one that never shows up." — Thomas',
+    '"Talk is cheap. Show me the code." — Torvalds',
+    '"Code is like humor. When you have to explain it, it\'s bad." — Cory House',
+    '"It works on my machine." — every dev ever',
+    '"There are 2 hard problems in computer science: cache invalidation, naming things, and off-by-1 errors."',
+    '"99 little bugs in the code... 99 little bugs... take one down, patch it around... 127 bugs in the code."',
+  ];
+
+  const NEOFETCH = `
+<span style="color:var(--violet)">   ╭────────────────────────────────╮</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--cyan)">sisqo</span><span style="color:var(--muted)">@</span><span style="color:var(--cyan)">dev</span>                    <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--muted)">──────────────────────────</span>     <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">OS</span><span style="color:var(--muted)">:</span>       SisQo Dev OS v2.0.26  <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">Kernel</span><span style="color:var(--muted)">:</span>   6.8.0-prod             <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">Shell</span><span style="color:var(--muted)">:</span>    zsh 5.9                <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">Editor</span><span style="color:var(--muted)">:</span>   neovim                 <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">CPU</span><span style="color:var(--muted)">:</span>      Brain @ 3.2GHz         <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">Memory</span><span style="color:var(--muted)">:</span>   Full of SO answers      <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">Coffee</span><span style="color:var(--muted)">:</span>   ██████████ 100%         <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">Theme</span><span style="color:var(--muted)">:</span>    dark (always)          <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   │</span>  <span style="color:var(--yellow)">Uptime</span><span style="color:var(--muted)">:</span>   10 years, 2 months     <span style="color:var(--violet)">│</span>
+<span style="color:var(--violet)">   ╰────────────────────────────────╯</span>`;
+
+  const HELP_TEXT = `
+<span class="t-kw">  Available commands</span>
+  <span style="color:var(--muted)">───────────────────────────────</span>
+  <span style="color:var(--cyan)">whoami</span>      developer identity
+  <span style="color:var(--cyan)">neofetch</span>    system info
+  <span style="color:var(--cyan)">ls</span>          list directory
+  <span style="color:var(--cyan)">pwd</span>         print working directory
+  <span style="color:var(--cyan)">date</span>        show current date
+  <span style="color:var(--cyan)">uptime</span>      show coding uptime
+  <span style="color:var(--cyan)">uname</span>       kernel info
+  <span style="color:var(--cyan)">ping</span>        ping sisqo.dev
+  <span style="color:var(--cyan)">fortune</span>     random dev quote
+  <span style="color:var(--cyan)">coffee</span>      ☕
+  <span style="color:var(--cyan)">clear</span>       clear terminal
+  <span style="color:var(--cyan)">help</span>        show this help`;
+
+  const COFFEE = `
+       ( (
+        ) )
+    .........
+    |       |]
+    \\       /
+     \`-----'
+  <span style="color:var(--yellow)">  ☕ compiling...</span>`;
+
+  const LS_OUT = `
+<span style="color:var(--cyan)">drwxr-xr-x</span>  projects/
+<span style="color:var(--cyan)">drwxr-xr-x</span>  experiments/
+<span style="color:var(--violet)">-rw-r--r--</span>  readme.md
+<span style="color:var(--violet)">-rwxr-xr-x</span>  deploy.sh
+<span style="color:var(--yellow)">-rw-------</span>  .env
+<span style="color:var(--yellow)">-rw-------</span>  .secrets`;
+
+  function process(raw) {
+    if (!booted) return;
+    const cmd = raw.trim();
+    if (!cmd) return;
+
+    history.unshift(cmd);
+    hIdx = -1;
+    prompt(cmd);
+
+    const [c, ...args] = cmd.split(/\s+/);
+
+    switch (c.toLowerCase()) {
+      case 'help':
+        line('out', HELP_TEXT);
+        break;
+
+      case 'whoami':
+        line('out', 'developer. builder. permanently caffeinated.');
+        line('out', 'shipping bits since 2016, still pretending to know what i\'m doing.');
+        break;
+
+      case 'neofetch':
+      case 'fetch':
+        line('out', NEOFETCH);
+        break;
+
+      case 'ls':
+      case 'ls -la':
+      case 'ls -l':
+        line('out', LS_OUT);
+        break;
+
+      case 'pwd':
+        line('out', '/home/sisqo');
+        break;
+
+      case 'date':
+        line('out', new Date().toString());
+        break;
+
+      case 'uptime':
+        line('out', 'up 10 years, 2 months, 14 days, 7:32:11  —  load avg: 0.91 3.14 1.41');
+        break;
+
+      case 'uname':
+        line('out', 'SisQo Dev OS v2.0.26 LTS x86_64 GNU/Linux brain-6.8.0-prod');
+        break;
+
+      case 'ping': {
+        const host = args[0] || 'sisqo.dev';
+        line('out', `PING ${host} (76.76.21.21): 56 data bytes`);
+        [18,21,19,22].forEach((ms,i) => setTimeout(() => {
+          line('out', `64 bytes from 76.76.21.21: icmp_seq=${i} ttl=60 time=${ms}.${Math.floor(Math.random()*9)} ms`);
+        }, i*400));
+        setTimeout(() => line('out', `--- ${host} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss`), 1800);
+        break;
+      }
+
+      case 'fortune':
+        line('out', FORTUNE[Math.floor(Math.random()*FORTUNE.length)]);
+        break;
+
+      case 'coffee':
+        line('out', COFFEE);
+        break;
+
+      case 'clear':
+        body.innerHTML = '';
+        return;
+
+      case 'sudo':
+        if (args.join(' ').replace(/\s+/g,'') === 'rm-rf/') {
+          line('err', 'nice try. (╯°□°）╯︵ ┻━┻');
+        } else {
+          line('err', 'sisqo is not in the sudoers file. This incident will be reported.');
+        }
+        break;
+
+      case 'vim':
+      case 'vi':
+        line('out', '<span style="color:var(--yellow)">hint: to exit vim, type  :q!  and press Enter.</span>');
+        line('out', 'just kidding. there is no vim here.');
+        break;
+
+      case 'exit':
+      case 'quit':
+        line('out', 'there is no escape. 🫥');
+        break;
+
+      case 'cat':
+        if (args[0] === 'readme.md') {
+          line('out', `# sisqo.dev\n\nDeveloper based on planet Earth.\nBuilding tools that solve real problems.\n\nStack: TypeScript · Java · Bash · SQL\nGitHub: github.com/sisqo`);
+        } else if (args[0] === '.env') {
+          line('err', 'Permission denied. (as it should be)');
+        } else {
+          line('err', `cat: ${args[0]||'(no file)'}: No such file or directory`);
+        }
+        break;
+
+      case 'history':
+        history.forEach((h,i) => line('out', `  ${String(i+1).padStart(3,'_')}  ${h}`));
+        break;
+
+      case 'echo':
+        line('out', args.join(' '));
+        break;
+
+      case 'matrix':
+        line('out', '<span style="color:var(--green)">Wake up, Neo... The Matrix has you.</span>');
+        triggerMatrix();
+        break;
+
+      case 'git':
+        if (args[0]==='blame') line('out', 'it was always you.');
+        else if (args[0]==='push') line('out', 'pushed to origin/main. deploying... ✓');
+        else line('out', `git: '${args[0]}' is not a git command. (try harder)`);
+        break;
+
+      case 'ssh':
+        line('out', 'ssh: connect to host 42.42.42.42 port 22: Connection refused. (expected)');
+        break;
+
+      case 'npm':
+      case 'yarn':
+      case 'pnpm':
+        if (args[0]==='install') {
+          line('out', 'added 847 packages, and audited 848 packages in 4s');
+          line('warn', '3 vulnerabilities found (but who\'s counting)');
+        } else line('out', `${c}: command '${args[0]}' — try 'npm install' maybe`);
+        break;
+
+      default:
+        line('err', `command not found: ${c}. Type 'help' to see available commands.`);
+    }
+
+    gap();
+    scrollBottom();
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const v = input.value;
+      input.value = '';
+      process(v);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (hIdx < history.length-1) { hIdx++; input.value = history[hIdx]; }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (hIdx > 0) { hIdx--; input.value = history[hIdx]; }
+      else { hIdx = -1; input.value = ''; }
+    } else if (e.key === 'l' && e.ctrlKey) {
+      e.preventDefault();
+      body.innerHTML = '';
+    }
+  });
+
+  document.querySelector('.terminal').addEventListener('click', () => input.focus());
+
+  /* Matrix easter egg */
+  function triggerMatrix() {
+    const overlay = document.createElement('canvas');
+    Object.assign(overlay.style, {
+      position:'fixed', inset:0, zIndex:9000, pointerEvents:'none', opacity:'0'
+    });
+    document.body.appendChild(overlay);
+    const cx = overlay.getContext('2d');
+    overlay.width = window.innerWidth;
+    overlay.height = window.innerHeight;
+    const cols = Math.floor(overlay.width/14);
+    const drops = Array(cols).fill(0);
+    let frame = 0, opacity = 0, fading = false;
+
+    const tid = setInterval(() => {
+      frame++;
+      if (frame === 10) fading = false, opacity = Math.min(opacity+0.05, 0.85);
+      if (frame > 120) fading = true;
+      if (fading) opacity = Math.max(opacity-0.03, 0);
+      if (opacity <= 0 && fading) { clearInterval(tid); overlay.remove(); return; }
+      overlay.style.opacity = opacity;
+      cx.fillStyle = 'rgba(0,0,0,0.05)';
+      cx.fillRect(0, 0, overlay.width, overlay.height);
+      cx.fillStyle = '#0f0';
+      cx.font = '13px monospace';
+      drops.forEach((y,i) => {
+        const c = String.fromCharCode(0x30A0 + Math.random()*96|0);
+        cx.fillText(c, i*14, y*14);
+        drops[i] = y > overlay.height/14 && Math.random() > 0.975 ? 0 : y+1;
+      });
+    }, 50);
+  }
+
+  boot();
+})();
+
+/* ─────────────────────────────────────────
+   CLOCK WIDGET
+───────────────────────────────────────── */
+(function() {
+  const val  = document.getElementById('clockVal');
+  const date = document.getElementById('clockDate');
+  const tz   = document.getElementById('clockTz');
+
+  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function pad(n) { return String(n).padStart(2,'0'); }
+
+  function tick() {
+    const now = new Date();
+    val.textContent  = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    date.textContent = `${DAYS[now.getDay()]} ${MONTHS[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
+    const off = -now.getTimezoneOffset()/60;
+    tz.textContent   = `UTC${off>=0?'+':''}${off}`;
+  }
+
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ─────────────────────────────────────────
+   STATUS WIDGET
+───────────────────────────────────────── */
+(function() {
+  const el = document.getElementById('statusFocus');
+  const messages = [
+    'building in TypeScript',
+    'shipping to prod',
+    'fixing a "minor" bug',
+    'reviewing a PR',
+    'reading the docs',
+    'git bisect-ing',
+    'optimizing queries',
+    'writing clean code™',
+    'on coffee break ☕',
+    'debugging at 3am',
+  ];
+  let idx = 0;
+
+  function next() {
+    el.classList.add('fade');
+    setTimeout(() => {
+      idx = (idx+1) % messages.length;
+      el.textContent = messages[idx];
+      el.classList.remove('fade');
+    }, 400);
+  }
+
+  el.textContent = messages[0];
+  setInterval(next, 3800);
+})();
+
+/* ─────────────────────────────────────────
+   SPARKLINE WIDGET
+───────────────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('sparkCanvas');
+  const ctx = canvas.getContext('2d');
+  const DATA = [3,6,2,8,5,9,4,7,6,10,8,7,9,10,8,6,9,7,10,9,8,10,7,9,10,8,9,10];
+
+  function draw() {
+    const W = canvas.offsetWidth * devicePixelRatio;
+    const H = canvas.offsetHeight * devicePixelRatio;
+    canvas.width = W;
+    canvas.height = H;
+
+    const max = Math.max(...DATA);
+    const step = W / (DATA.length - 1);
+    const pts = DATA.map((v,i) => [i*step, H - (v/max)*(H*0.8) - H*0.1]);
+
+    /* fill */
+    const grad = ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0, 'rgba(139,92,246,0.35)');
+    grad.addColorStop(1, 'rgba(139,92,246,0)');
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], H);
+    pts.forEach(([x,y]) => ctx.lineTo(x,y));
+    ctx.lineTo(pts[pts.length-1][0], H);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    /* line */
+    ctx.beginPath();
+    pts.forEach(([x,y],i) => i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y));
+    ctx.strokeStyle = '#8b5cf6';
+    ctx.lineWidth = 2 * devicePixelRatio;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    /* last dot */
+    const [lx,ly] = pts[pts.length-1];
+    ctx.beginPath();
+    ctx.arc(lx, ly, 4*devicePixelRatio, 0, Math.PI*2);
+    ctx.fillStyle = '#8b5cf6';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(lx, ly, 2*devicePixelRatio, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+  }
+
+  draw();
+  window.addEventListener('resize', draw);
+})();
+
+/* ─────────────────────────────────────────
+   SCROLL REVEAL
+───────────────────────────────────────── */
+(function() {
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.05 }
   );
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
 </script>
 </body>
 </html>
