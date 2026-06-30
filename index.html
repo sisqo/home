@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SisQo Dev</title>
+  <meta name="description" content="Building precise digital tools." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #050508;
+      --surface: #0d0d14;
+      --border:  #1a1a2e;
+      --dim:     #3a3a5c;
+      --text:    #e2e2f0;
+      --muted:   #6b6b9a;
+      --violet:  #7c3aed;
+      --cyan:    #06b6d4;
+      --green:   #10b981;
+      --pink:    #ec4899;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── Canvas background ── */
+    #canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    /* ── Layout ── */
+    main {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 1.5rem;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 0 5rem;
+      gap: 1.5rem;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      border: 1px solid color-mix(in srgb, var(--cyan) 30%, transparent);
+      padding: 0.35em 0.9em;
+      border-radius: 999px;
+    }
+
+    .title {
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff 30%, var(--violet) 70%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+
+    /* glitch layers */
+    .title::before,
+    .title::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .title::before {
+      animation: glitch-1 4s infinite steps(1);
+      clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+    }
+    .title::after {
+      animation: glitch-2 4s infinite steps(1);
+      clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+    }
+
+    @keyframes glitch-1 {
+      0%, 90%, 100% { transform: translate(0); opacity: 0; }
+      92% { transform: translate(-3px, 1px); opacity: 0.8; filter: hue-rotate(90deg); }
+      94% { transform: translate(3px, -1px); opacity: 0.8; }
+      96% { transform: translate(-2px, 0); opacity: 0.6; }
+    }
+    @keyframes glitch-2 {
+      0%, 88%, 100% { transform: translate(0); opacity: 0; }
+      90% { transform: translate(3px, 2px); opacity: 0.7; filter: hue-rotate(-60deg); }
+      93% { transform: translate(-3px, 1px); opacity: 0.7; }
+      95% { transform: translate(1px, -2px); opacity: 0.5; }
+    }
+
+    .tagline {
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      font-weight: 300;
+      max-width: 36ch;
+      line-height: 1.8;
+    }
+
+    .tagline span {
+      color: var(--text);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 0.55em;
+      height: 1.1em;
+      background: var(--cyan);
+      vertical-align: text-bottom;
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── Divider ── */
+    .divider {
+      width: 100%;
+      max-width: 780px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), var(--dim), var(--border), transparent);
+      margin: 1rem 0 3rem;
+    }
+
+    /* ── Projects ── */
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      align-self: flex-start;
+      max-width: 780px;
+      width: 100%;
+      margin-bottom: 1.25rem;
+    }
+    .section-label::before { content: '// '; color: var(--dim); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1px;
+      width: 100%;
+      max-width: 780px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--border);
+    }
+
+    .card {
+      background: var(--surface);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent, var(--violet));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .card:hover::before { transform: scaleX(1); }
+    .card:hover { background: color-mix(in srgb, var(--surface) 70%, var(--accent, var(--violet)) 5%); }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent, var(--violet));
+      box-shadow: 0 0 8px var(--accent, var(--violet));
+    }
+
+    .card-arrow {
+      color: var(--dim);
+      font-size: 1.1rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .card:hover .card-arrow { color: var(--accent, var(--violet)); transform: translate(2px, -2px); }
+
+    .card-name {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .card-tag {
+      margin-top: auto;
+      align-self: flex-start;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent, var(--violet));
+      border: 1px solid color-mix(in srgb, var(--accent, var(--violet)) 35%, transparent);
+      padding: 0.25em 0.6em;
+      border-radius: 4px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: auto;
+      padding: 3rem 0 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-line {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--dim);
+      text-transform: uppercase;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--cyan); }
+
+    /* ── Scroll-in animation ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 5rem 0 3rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<main>
+  <section class="hero">
+    <div class="badge">sisqo.dev</div>
+    <h1 class="title" data-text="SisQo Dev">SisQo Dev</h1>
+    <p class="tagline">
+      <span>Building</span> precise digital tools —<br/>
+      web apps, utilities, experiments.<span class="cursor"></span>
+    </p>
+  </section>
+
+  <div class="divider reveal"></div>
+
+  <p class="section-label reveal">projects</p>
+
+  <div class="grid reveal">
+
+    <a class="card" href="https://easy-guitar-tuner.sisqo.dev" style="--accent: #2aab9e">
+      <div class="card-top">
+        <div class="card-dot"></div>
+        <span class="card-arrow">↗</span>
+      </div>
+      <div class="card-name">Easy Guitar Tuner</div>
+      <div class="card-desc">Chromatic tuner for guitar and ukulele — precise, fast, distraction-free.</div>
+      <span class="card-tag">web app</span>
+    </a>
+
+    <a class="card" href="https://pg-energy.sisqo.dev" style="--accent: #3DDB8F">
+      <div class="card-top">
+        <div class="card-dot"></div>
+        <span class="card-arrow">↗</span>
+      </div>
+      <div class="card-name">PG Energy</div>
+      <div class="card-desc">Vetrina istituzionale per ingegneria impiantistica ed energetica.</div>
+      <span class="card-tag">website</span>
+    </a>
+
+    <a class="card" href="https://bitcoin-cracker.sisqo.dev" style="--accent: #f59e0b">
+      <div class="card-top">
+        <div class="card-dot"></div>
+        <span class="card-arrow">↗</span>
+      </div>
+      <div class="card-name">Bitcoin Cracker</div>
+      <div class="card-desc">High-throughput Bitcoin wallet key-space exploration tool.</div>
+      <span class="card-tag">java / tool</span>
+    </a>
+
+    <a class="card" href="https://witch-cracker.sisqo.dev" style="--accent: #a855f7">
+      <div class="card-top">
+        <div class="card-dot"></div>
+        <span class="card-arrow">↗</span>
+      </div>
+      <div class="card-name">Witch Cracker</div>
+      <div class="card-desc">Brute-force hash cracking with dictionary and rule-based attacks.</div>
+      <span class="card-tag">java / tool</span>
+    </a>
+
+  </div>
+
+  <footer class="reveal">
+    <div class="footer-links">
+      <a href="https://github.com/sisqo">github</a>
+      <a href="mailto:f.limberti@3nd.it">contact</a>
+    </div>
+    <p class="footer-line">© 2026 SisQo Dev</p>
+  </footer>
+</main>
+
+<script>
+  // ── Canvas: drifting particles ──
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles;
+
+  const CHARS = '01アイウエオ{}[]<>/\\|=+-*&^%$#@!?;:.,'.split('');
+  const COLORS = ['#7c3aed','#06b6d4','#10b981','#a855f7','#ec4899'];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function makeParticle() {
+    return {
+      x:     Math.random() * W,
+      y:     Math.random() * H,
+      vy:    0.15 + Math.random() * 0.35,
+      vx:    (Math.random() - 0.5) * 0.1,
+      char:  CHARS[Math.floor(Math.random() * CHARS.length)],
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      size:  10 + Math.random() * 6,
+      life:  Math.random(),
+      maxLife: 0.4 + Math.random() * 0.6,
+      tick:  0,
+      changeEvery: 20 + Math.floor(Math.random() * 40),
+    };
+  }
+
+  function init() {
+    resize();
+    particles = Array.from({ length: 80 }, makeParticle);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = `${14}px 'JetBrains Mono', monospace`;
+
+    for (const p of particles) {
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.life -= 0.001;
+      p.tick++;
+
+      if (p.tick % p.changeEvery === 0)
+        p.char = CHARS[Math.floor(Math.random() * CHARS.length)];
+
+      const alpha = Math.max(0, Math.min(p.life / p.maxLife, 1)) * 0.6;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle   = p.color;
+      ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
+      ctx.fillText(p.char, p.x, p.y);
+
+      if (p.life <= 0 || p.y > H + 20 || p.x < -20 || p.x > W + 20) {
+        Object.assign(p, makeParticle());
+        p.y = -10;
+      }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  init();
+  draw();
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
