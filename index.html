@@ -3,8 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Francesco Limberti — SisQo Dev</title>
-  <meta name="description" content="Developer. Builder. Permanently caffeinated." />
+  <title>Francesco Limberti (SisQo) — Developer, Founder, AI</title>
+  <meta name="description" content="Full-stack developer, founder and CTO with 30 years of shipping code. I build software, companies, and the pragmatic AI that runs inside both." />
+  <meta name="author" content="Francesco Limberti" />
+  <link rel="canonical" href="https://sisqo.dev" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="sisqo.dev" />
+  <meta property="og:title" content="Francesco Limberti (SisQo) — Developer, Founder, AI" />
+  <meta property="og:description" content="Full-stack developer, founder and CTO with 30 years of shipping code. I build software, companies, and the pragmatic AI that runs inside both." />
+  <meta property="og:url" content="https://sisqo.dev" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Francesco Limberti (SisQo) — Developer, Founder, AI" />
+  <meta name="twitter:description" content="Full-stack developer, founder and CTO with 30 years of shipping code. I build software, companies, and the pragmatic AI that runs inside both." />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet" />
@@ -690,7 +706,7 @@
     <div class="foot-links">
       <a href="https://github.com/sisqo">github</a>
     </div>
-    <p class="foot-copy">© 2026 SisQo Dev</p>
+    <p class="foot-copy">© 2026 SisQo Dev · <span id="commitCount">—</span> commits</p>
   </footer>
 </main>
 
@@ -1224,6 +1240,22 @@
 
   draw();
   window.addEventListener('resize', draw);
+})();
+
+/* ─────────────────────────────────────────
+   COMMIT COUNT
+───────────────────────────────────────── */
+(function() {
+  const el = document.getElementById('commitCount');
+  fetch('https://api.github.com/repos/sisqo/home/commits?per_page=1&sha=main')
+    .then(res => {
+      const link = res.headers.get('Link');
+      const match = link && link.match(/page=(\d+)>; rel="last"/);
+      if (match) return parseInt(match[1], 10);
+      return res.json().then(data => Array.isArray(data) ? data.length : null);
+    })
+    .then(count => { if (count) el.textContent = count; })
+    .catch(() => {});
 })();
 
 /* ─────────────────────────────────────────
