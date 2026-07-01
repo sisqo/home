@@ -162,6 +162,18 @@
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
+    /* ── Bio ── */
+    .bio {
+      max-width: 620px;
+      text-align: center;
+      color: var(--muted);
+      font-size: clamp(0.78rem, 1.6vw, 0.88rem);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+    .bio strong { color: var(--text); font-weight: 400; }
+
     /* ── Terminal ── */
     .terminal-wrap {
       width: 100%;
@@ -405,6 +417,17 @@
     <div class="badge">sisqo.dev</div>
     <h1 class="title" data-text="SisQo Dev">SisQo Dev</h1>
     <p class="tagline" id="tagline"><span class="tagline-cursor"></span></p>
+  </section>
+
+  <section class="bio reveal">
+    <p>
+      I'm Francesco — SisQo to this site. I started writing code at 8 years old
+      and never really stopped; it's been web projects ever since. Clean Code by
+      Robert C. Martin has stuck with me as the core reference for how I reason
+      about software, long before I could explain why. Lately that means Java,
+      Spring Boot, MySQL, Redis, and Docker — still arguing with my own pull
+      requests.
+    </p>
   </section>
 
   <div class="terminal-wrap reveal">
@@ -768,7 +791,7 @@
 
       case 'cat':
         if (args[0] === 'readme.md') {
-          line('out', `# sisqo.dev\n\nDeveloper based on planet Earth.\nBuilding tools that solve real problems.\n\nStack: TypeScript · Java · Bash · SQL\nGitHub: github.com/sisqo`);
+          line('out', `# sisqo.dev\n\nDeveloper based on planet Earth.\nBuilding tools that solve real problems.\n\nStack: Java · Spring Boot · MySQL · Redis · Docker\nGitHub: github.com/sisqo`);
         } else if (args[0] === '.env') {
           line('err', 'Permission denied. (as it should be)');
         } else {
