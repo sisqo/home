@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SisQo Dev</title>
+  <title>Francesco Limberti — SisQo Dev</title>
   <meta name="description" content="Developer. Builder. Permanently caffeinated." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -142,8 +142,16 @@
       92%{transform:translate(2px,-1px);opacity:.4}
     }
 
+    .subtitle {
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      opacity: 0.85;
+    }
+
     .tagline {
-      height: 1.4em;
+      min-height: 1.4em;
       font-size: clamp(0.75rem, 2vw, 0.95rem);
       color: var(--muted);
       letter-spacing: 0.04em;
@@ -164,14 +172,15 @@
 
     /* ── Bio ── */
     .bio {
-      max-width: 640px;
-      text-align: center;
+      max-width: 680px;
+      text-align: left;
       color: rgba(238,238,255,0.7);
       font-size: clamp(0.85rem, 1.8vw, 1rem);
       font-weight: 300;
       line-height: 1.85;
       margin-bottom: 2.5rem;
     }
+    .bio p + p { margin-top: 1.25em; }
     .bio strong { color: var(--text); font-weight: 500; }
     .bio .accent { color: var(--cyan); font-weight: 400; }
 
@@ -417,19 +426,49 @@
   <section class="hero">
     <div class="badge">sisqo.dev</div>
     <h1 class="title" data-text="SisQo Dev">SisQo Dev</h1>
+    <h2 class="subtitle">Francesco Limberti</h2>
     <p class="tagline" id="tagline"><span class="tagline-cursor"></span></p>
   </section>
 
   <section class="bio reveal">
     <p>
-      I'm <strong>Francesco</strong> — SisQo to this site. I started writing code
-      at 8 years old and never really stopped; it's been web projects ever since,
-      one deploy (and one 2am debugging session) at a time. <strong>Clean Code</strong>
-      by Robert C. Martin has stuck with me as the core reference for how I reason
-      about software, long before I could explain why: readability over cleverness,
-      always. Lately that means <span class="accent">Java, Spring Boot, MySQL, Redis,
-      and Docker</span>, with strong opinions about everything in between and a
-      Git history to prove it.
+      I'm <strong>Francesco Limberti</strong> — <em>SisQo</em> to this site. I started
+      writing code at 8 years old and never really stopped; three decades later it's
+      still web projects, one deploy (and the occasional 2am debugging session) at a
+      time.
+    </p>
+    <p>
+      As a <strong>developer</strong>, I work full-stack — <span class="accent">Java,
+      Spring Boot, MySQL, Redis, and Docker</span>, running on cloud infrastructure I'm
+      comfortable owning end to end, with years of e-commerce at real scale behind me.
+      <strong>Clean Code</strong> by Robert C. Martin has stuck with me as the core
+      reference for how I reason about software: readability over cleverness, always.
+      But clean code is the starting point, not the goal — what I care about is
+      architecture that holds up, systems that stay fast and reliable under load, and
+      code that reaches production. I have strong opinions about everything in between,
+      and a Git history to prove it.
+    </p>
+    <p>
+      Somewhere along the way I stopped just writing code for other people's ideas and
+      started building my own. As a <strong>founder and CTO</strong>, I've built and led
+      an e-commerce company from zero — steering both the technology and the business
+      direction. What pulls me in is the same thing every time: a real problem worth
+      solving, the chance to turn an idea into a working product, and the shot at
+      building something that reaches people at scale. The engineering is the easy part;
+      making it matter is the work.
+    </p>
+    <p>
+      More recently that work runs on <strong>AI</strong>. I integrate LLMs into
+      products that live in production and build agents and automations that do jobs
+      that matter — mostly on top of the major model APIs, with tool use and MCP-style
+      agents where they earn their place. My take on AI is deliberately pragmatic: it's
+      a genuinely powerful tool, best pointed at problems where it creates real value,
+      and mostly ignored where it's just noise. I'd rather ship something useful with it
+      than talk about it.
+    </p>
+    <p>
+      Three roles, one habit: I like building things that work, and then making them
+      work better.
     </p>
   </section>
 
@@ -556,6 +595,7 @@
 (function() {
   const el = document.getElementById('tagline');
   const lines = [
+    'I build software, companies, and lately the <span class="tagline-word">AI</span> that runs inside both.',
     'developer<span class="tagline-word">.</span>',
     'builder<span class="tagline-word">.</span>',
     'permanently <span class="tagline-word">caffeinated</span>.',
@@ -564,6 +604,9 @@
     'it works on my <span class="tagline-word">machine</span>.',
     'tabs > spaces<span class="tagline-word">.</span>',
     'undefined is <span class="tagline-word">not a function</span>.',
+    'developer at heart, entrepreneur by trade, pragmatic about <span class="tagline-word">AI</span>.',
+    'thirty years of writing code, now aimed at products people actually <span class="tagline-word">use</span>.',
+    'full-stack developer and CTO who ships: clean code, real products, no <span class="tagline-word">hype</span>.',
   ];
   let idx = 0;
   const CURSOR = '<span class="tagline-cursor"></span>';
