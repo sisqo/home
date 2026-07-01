@@ -372,6 +372,117 @@
       margin-top: 0.25rem;
     }
 
+    /* ── Projects ── */
+    .projects-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .section-label {
+      width: 100%;
+      max-width: 900px;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .section-label::before { content: '// '; color: var(--dim); }
+
+    .projects {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .project-card {
+      background: rgba(8,8,18,0.7);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(139,92,246,0.4);
+      box-shadow:
+        0 0 0 1px rgba(34,211,238,0.12),
+        0 24px 48px rgba(0,0,0,0.5);
+    }
+
+    .project-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--border);
+    }
+    .project-bar-title {
+      flex: 1;
+      text-align: center;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .project-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      flex: 1;
+    }
+    .project-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .project-desc {
+      font-size: 0.8rem;
+      color: rgba(238,238,255,0.65);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .stack-pill {
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      border: 1px solid rgba(34,211,238,0.25);
+      padding: 0.25em 0.7em;
+      border-radius: 999px;
+      background: rgba(34,211,238,0.04);
+    }
+    .project-links {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: auto;
+      padding-top: 0.4rem;
+    }
+    .project-links a {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .project-links a.primary { color: var(--text); font-weight: 500; }
+    .project-links a:hover { color: var(--cyan); }
+
     /* ── Footer ── */
     footer {
       display: flex;
@@ -511,6 +622,67 @@
       <canvas id="sparkCanvas"></canvas>
     </div>
   </div>
+
+  <section class="projects-section reveal">
+    <div class="section-label">projects</div>
+    <div class="projects">
+      <article class="project-card">
+        <div class="project-bar">
+          <div class="tdots">
+            <span class="tdot tdot-r"></span>
+            <span class="tdot tdot-y"></span>
+            <span class="tdot tdot-g"></span>
+          </div>
+          <span class="project-bar-title">guitar.sisqo.dev</span>
+          <div style="width:36px"></div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-name">Easy Guitar Tuner</h3>
+          <p class="project-desc">
+            A chromatic tuner for 6-string guitar, 12-string guitar, and ukulele —
+            real-time pitch detection straight from your microphone, no app install.
+          </p>
+          <div class="project-stack">
+            <span class="stack-pill">React</span>
+            <span class="stack-pill">Vite</span>
+            <span class="stack-pill">Tailwind</span>
+          </div>
+          <div class="project-links">
+            <a class="primary" href="https://guitar.sisqo.dev" target="_blank" rel="noopener">visit →</a>
+            <a href="https://github.com/sisqo/easy-guitar-tuner" target="_blank" rel="noopener">github</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-bar">
+          <div class="tdots">
+            <span class="tdot tdot-r"></span>
+            <span class="tdot tdot-y"></span>
+            <span class="tdot tdot-g"></span>
+          </div>
+          <span class="project-bar-title">wikitune.sisqo.dev</span>
+          <div style="width:36px"></div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-name">Wikitune</h3>
+          <p class="project-desc">
+            An SEO content hub with 36 in-depth articles on guitar and ukulele
+            tunings, built to send real, organic traffic straight to the tuner.
+          </p>
+          <div class="project-stack">
+            <span class="stack-pill">Next.js</span>
+            <span class="stack-pill">MDX</span>
+            <span class="stack-pill">Tailwind</span>
+          </div>
+          <div class="project-links">
+            <a class="primary" href="https://wikitune.sisqo.dev" target="_blank" rel="noopener">visit →</a>
+            <a href="https://github.com/sisqo/wikitune" target="_blank" rel="noopener">github</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
 
   <footer class="reveal">
     <div class="foot-links">
