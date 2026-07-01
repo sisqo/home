@@ -250,6 +250,7 @@
     .tline.err::before { content: '[  !!  ] '; color: var(--red); }
     .tline.out { color: rgba(238,238,255,0.75); padding-left: 1.2em; }
     .tline.gap { height: 0.5em; }
+    .tline.block { display: block; }
 
     .t-prompt { color: var(--violet); white-space: nowrap; }
     .t-cmd     { color: var(--cyan); }
@@ -932,7 +933,7 @@
 
     switch (c.toLowerCase()) {
       case 'help':
-        line('out', HELP_TEXT);
+        line('out block', HELP_TEXT);
         break;
 
       case 'whoami':
@@ -942,13 +943,13 @@
 
       case 'neofetch':
       case 'fetch':
-        line('out', NEOFETCH);
+        line('out block', NEOFETCH);
         break;
 
       case 'ls':
       case 'ls -la':
       case 'ls -l':
-        line('out', LS_OUT);
+        line('out block', LS_OUT);
         break;
 
       case 'pwd':
@@ -973,7 +974,7 @@
         [18,21,19,22].forEach((ms,i) => setTimeout(() => {
           line('out', `64 bytes from 76.76.21.21: icmp_seq=${i} ttl=60 time=${ms}.${Math.floor(Math.random()*9)} ms`);
         }, i*400));
-        setTimeout(() => line('out', `--- ${host} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss`), 1800);
+        setTimeout(() => line('out block', `--- ${host} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss`), 1800);
         break;
       }
 
@@ -982,7 +983,7 @@
         break;
 
       case 'coffee':
-        line('out', COFFEE);
+        line('out block', COFFEE);
         break;
 
       case 'clear':
@@ -1010,7 +1011,7 @@
 
       case 'cat':
         if (args[0] === 'readme.md') {
-          line('out', `# sisqo.dev\n\nDeveloper based on planet Earth.\nBuilding tools that solve real problems.\n\nStack: Java · Spring Boot · MySQL · Redis · Docker\nGitHub: github.com/sisqo`);
+          line('out block', `# sisqo.dev\n\nDeveloper based on planet Earth.\nBuilding tools that solve real problems.\n\nStack: Java · Spring Boot · MySQL · Redis · Docker\nGitHub: github.com/sisqo`);
         } else if (args[0] === '.env') {
           line('err', 'Permission denied. (as it should be)');
         } else {
