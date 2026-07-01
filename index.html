@@ -164,15 +164,16 @@
 
     /* ── Bio ── */
     .bio {
-      max-width: 620px;
+      max-width: 640px;
       text-align: center;
-      color: var(--muted);
-      font-size: clamp(0.78rem, 1.6vw, 0.88rem);
+      color: rgba(238,238,255,0.7);
+      font-size: clamp(0.85rem, 1.8vw, 1rem);
       font-weight: 300;
-      line-height: 1.8;
+      line-height: 1.85;
       margin-bottom: 2.5rem;
     }
-    .bio strong { color: var(--text); font-weight: 400; }
+    .bio strong { color: var(--text); font-weight: 500; }
+    .bio .accent { color: var(--cyan); font-weight: 400; }
 
     /* ── Terminal ── */
     .terminal-wrap {
@@ -421,12 +422,14 @@
 
   <section class="bio reveal">
     <p>
-      I'm Francesco — SisQo to this site. I started writing code at 8 years old
-      and never really stopped; it's been web projects ever since. Clean Code by
-      Robert C. Martin has stuck with me as the core reference for how I reason
-      about software, long before I could explain why. Lately that means Java,
-      Spring Boot, MySQL, Redis, and Docker — still arguing with my own pull
-      requests.
+      I'm <strong>Francesco</strong> — SisQo to this site. I started writing code
+      at 8 years old and never really stopped; it's been web projects ever since,
+      one deploy (and one 2am debugging session) at a time. <strong>Clean Code</strong>
+      by Robert C. Martin has stuck with me as the core reference for how I reason
+      about software, long before I could explain why: readability over cleverness,
+      always. Lately that means <span class="accent">Java, Spring Boot, MySQL, Redis,
+      and Docker</span>, with strong opinions about everything in between and a
+      Git history to prove it.
     </p>
   </section>
 
