@@ -201,6 +201,14 @@ main {
   margin-top: 0.2rem;
 }
 
+.post-cta {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--cyan);
+  font-weight: 500;
+  margin-top: 0.4rem;
+}
+
 .empty-state {
   padding: 2rem 1.5rem;
   color: var(--muted);

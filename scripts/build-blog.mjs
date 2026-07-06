@@ -121,6 +121,7 @@ function buildIndexPage(posts, indexTemplate) {
         <span class="post-title">${escapeHtml(p.title)}</span>
         <span class="post-excerpt">${escapeHtml(p.excerpt)}</span>
         <span class="post-tags">${tagPills(p.tags)}</span>
+        <span class="post-cta">read post →</span>
       </a>`
         )
         .join('\n')
