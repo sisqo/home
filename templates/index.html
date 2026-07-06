@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — SisQo Dev</title>
+  <meta name="description" content="Personal notes and long-form writing from Francesco Limberti (SisQo) — development, building products, and everything in between." />
+  <meta name="author" content="Francesco Limberti" />
+  <link rel="canonical" href="https://sisqo.dev/blog" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="sisqo.dev" />
+  <meta property="og:title" content="Blog — SisQo Dev" />
+  <meta property="og:description" content="Personal notes and long-form writing from Francesco Limberti (SisQo)." />
+  <meta property="og:url" content="https://sisqo.dev/blog" />
+  <meta property="og:locale" content="en_US" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Blog — SisQo Dev" />
+  <meta name="twitter:description" content="Personal notes and long-form writing from Francesco Limberti (SisQo)." />
+
+  <link rel="alternate" type="application/rss+xml" title="SisQo Dev — Blog" href="/blog/rss.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/blog.css" />
+  <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+
+<canvas id="aurora"></canvas>
+<div id="glow"></div>
+
+<main>
+  <div class="section-label">blog</div>
+
+  <div class="terminal reveal">
+    <div class="term-bar">
+      <div class="tdots">
+        <span class="tdot tdot-r"></span>
+        <span class="tdot tdot-y"></span>
+        <span class="tdot tdot-g"></span>
+      </div>
+      <span class="term-title">~/blog — cat posts/*.md</span>
+      <div style="width:48px"></div>
+    </div>
+    <div class="post-list">
+{{POST_ROWS}}
+    </div>
+  </div>
+
+  <footer class="reveal">
+    <div class="foot-links">
+      <a href="/">home</a>
+      <a href="https://github.com/sisqo">github</a>
+    </div>
+    <p class="foot-copy">© 2026 SisQo Dev</p>
+  </footer>
+</main>
+
+<script defer src="/assets/blog.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

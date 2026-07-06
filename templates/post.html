@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}} — SisQo Dev</title>
+  <meta name="description" content="{{EXCERPT}}" />
+  <meta name="author" content="Francesco Limberti" />
+  <link rel="canonical" href="https://sisqo.dev/blog/{{SLUG}}" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="sisqo.dev" />
+  <meta property="og:title" content="{{TITLE}}" />
+  <meta property="og:description" content="{{EXCERPT}}" />
+  <meta property="og:url" content="https://sisqo.dev/blog/{{SLUG}}" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:published_time" content="{{DATE_ISO}}" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{TITLE}}" />
+  <meta name="twitter:description" content="{{EXCERPT}}" />
+
+  <link rel="alternate" type="application/rss+xml" title="SisQo Dev — Blog" href="/blog/rss.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/blog.css" />
+  <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+
+<canvas id="aurora"></canvas>
+<div id="glow"></div>
+
+<main>
+  <header class="post-header reveal">
+    <div class="section-label">blog</div>
+    <h1 class="post-page-title">{{TITLE}}</h1>
+    <div class="post-meta">
+      <span class="post-date">{{DATE_DISPLAY}}</span>
+      <span class="post-tags">{{TAG_PILLS}}</span>
+    </div>
+  </header>
+
+  <article class="post-prose">
+{{CONTENT}}
+  </article>
+
+  <footer class="reveal">
+    <div class="foot-links">
+      <a href="/blog">← blog</a>
+      <a href="/">home</a>
+      <a href="https://github.com/sisqo">github</a>
+    </div>
+    <p class="foot-copy">© 2026 SisQo Dev</p>
+  </footer>
+</main>
+
+<script defer src="/assets/blog.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
