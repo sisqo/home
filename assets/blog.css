@@ -77,6 +77,36 @@ main {
 }
 .reveal.visible { opacity: 1; transform: none; }
 
+/* ── Site nav — duplicated from index.html ── */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  background: rgba(3,3,10,0.7);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.site-nav-brand {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--cyan);
+  text-decoration: none;
+  font-weight: 700;
+}
+.site-nav-links { display: flex; gap: 1.5rem; }
+.site-nav-links a {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-nav-links a:hover { color: var(--cyan); }
+
 .section-label {
   width: 100%;
   font-size: 0.7rem;
