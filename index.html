@@ -102,18 +102,11 @@
       z-index: 5;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       padding: 0.9rem 1.5rem;
       background: rgba(3,3,10,0.7);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-    }
-    .site-nav-brand {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      color: var(--cyan);
-      text-decoration: none;
-      font-weight: 700;
     }
     .site-nav-links { display: flex; gap: 1.5rem; }
     .site-nav-links a {
@@ -588,7 +581,6 @@
 <div id="glow"></div>
 
 <nav class="site-nav">
-  <a class="site-nav-brand" href="/">sisqo.dev</a>
   <div class="site-nav-links">
     <a href="/">home</a>
     <a href="/blog">blog</a>
@@ -967,7 +959,6 @@
         line(cls, text);
         if (ms >= 930) {
           booted = true;
-          input.focus();
         }
       }, ms);
     });
