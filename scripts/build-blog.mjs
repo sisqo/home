@@ -14,6 +14,7 @@ const OUT_DIR = join(ROOT, 'blog');
 const marked = new Marked(
   markedHighlight({
     langPrefix: 'hljs language-',
+    emptyLangClass: 'hljs language-plaintext',
     highlight(code, lang) {
       const language = hljs.getLanguage(lang) ? lang : 'plaintext';
       return hljs.highlight(code, { language }).value;
