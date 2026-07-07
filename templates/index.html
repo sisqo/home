@@ -23,7 +23,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/blog.css" />
   <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 </head>
@@ -42,19 +42,9 @@
 <main>
   <div class="section-label">blog</div>
 
-  <div class="terminal reveal">
-    <div class="term-bar">
-      <div class="tdots">
-        <span class="tdot tdot-r"></span>
-        <span class="tdot tdot-y"></span>
-        <span class="tdot tdot-g"></span>
-      </div>
-      <span class="term-title">~/blog — cat posts/*.md</span>
-      <div style="width:48px"></div>
-    </div>
-    <div class="post-list">
+  <div class="post-list reveal">
 {{POST_ROWS}}
-    </div>
+    <div class="post-list-end"></div>
   </div>
 
   <footer class="reveal">

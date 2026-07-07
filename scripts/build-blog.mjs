@@ -44,6 +44,12 @@ function slugFromFilename(filename) {
   return match ? match[1] : base;
 }
 
+function estimateReadTime(content) {
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+  return `${minutes} min`;
+}
+
 function render(template, replacements) {
   let out = template;
   for (const [key, value] of Object.entries(replacements)) {
@@ -81,6 +87,7 @@ function loadPosts() {
         excerpt: data.excerpt,
         tags,
         date,
+        read: estimateReadTime(content),
         html: marked.parse(content),
       });
     } catch (err) {
@@ -94,6 +101,10 @@ function loadPosts() {
 
 function tagPills(tags) {
   return tags.map((t) => `<span class="stack-pill">${escapeHtml(t)}</span>`).join('');
+}
+
+function tagList(tags) {
+  return tags.map((t) => `<span class="tag">#${escapeHtml(t)}</span>`).join('');
 }
 
 function buildPostPage(post, postTemplate) {
@@ -117,11 +128,18 @@ function buildIndexPage(posts, indexTemplate) {
     ? posts
         .map(
           (p) => `      <a class="post-row" href="/blog/${p.slug}">
-        <span class="post-date">${formatDateDisplay(p.date)}</span>
-        <span class="post-title">${escapeHtml(p.title)}</span>
-        <span class="post-excerpt">${escapeHtml(p.excerpt)}</span>
-        <span class="post-tags">${tagPills(p.tags)}</span>
-        <span class="post-cta">read post →</span>
+        <div class="post-row-meta">
+          <div class="post-row-date">${formatDateDisplay(p.date)}</div>
+          <div class="post-row-read">${p.read}</div>
+        </div>
+        <div class="post-row-body">
+          <div class="post-title">${escapeHtml(p.title)}</div>
+          <div class="post-excerpt">${escapeHtml(p.excerpt)}</div>
+          <div class="post-row-footer">
+            <div class="post-row-tags">${tagList(p.tags)}</div>
+            <span class="post-cta">read post →</span>
+          </div>
+        </div>
       </a>`
         )
         .join('\n')
