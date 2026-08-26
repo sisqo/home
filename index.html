@@ -428,15 +428,33 @@
       align-items: flex-start;
     }
     .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
       width: 100%;
       max-width: 900px;
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 1.25rem;
+      margin: 0 0 1.5rem;
     }
-    .section-label::before { content: '// '; color: var(--dim); }
+    .projects-section .section-label:not(:first-child) {
+      margin-top: 1.5rem;
+    }
+    .section-label::before { content: '//'; color: var(--dim); }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+    }
+    .section-label.cat-cyan   { color: var(--cyan); }
+    .section-label.cat-cyan::after   { background: linear-gradient(90deg, rgba(34,211,238,0.4), transparent); }
+    .section-label.cat-violet { color: var(--violet); }
+    .section-label.cat-violet::after { background: linear-gradient(90deg, rgba(139,92,246,0.4), transparent); }
+    .section-label.cat-green  { color: var(--green); }
+    .section-label.cat-green::after  { background: linear-gradient(90deg, rgba(52,211,153,0.4), transparent); }
 
     .projects {
       width: 100%;
@@ -683,7 +701,7 @@
   </div>
 
   <section class="projects-section reveal">
-    <div class="section-label">web app</div>
+    <div class="section-label cat-cyan">web app</div>
     <div class="projects">
       <article class="project-card">
         <div class="project-bar">
@@ -769,7 +787,7 @@
       </article>
     </div>
 
-    <div class="section-label">web sites</div>
+    <div class="section-label cat-violet">web sites</div>
     <div class="projects">
       <article class="project-card">
         <div class="project-bar">
@@ -828,7 +846,7 @@
       </article>
     </div>
 
-    <div class="section-label">knowledge</div>
+    <div class="section-label cat-green">knowledge</div>
     <div class="projects">
       <article class="project-card">
         <div class="project-bar">
